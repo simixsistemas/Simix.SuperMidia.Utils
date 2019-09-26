@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <AssemblyName>SetupDevice</AssemblyName>
+    <RootNamespace>SetupDevice</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AddOnBluebird.apk" />
+    <None Remove="AddOnOdroidC2.apk" />
+    <None Remove="AddOnUnnion.apk" />
+    <None Remove="BackupNovaLauncherOdroidC2.novabackup" />
+    <None Remove="BackupNovaLauncherUnnion.novabackup" />
+    <None Remove="google.android.tts.apk" />
+    <None Remove="nova-launcher.apk" />
+    <None Remove="RootKit\v1.0.29\adb.exe" />
+    <None Remove="RootKit\v1.0.29\AdbWinApi.dll" />
+    <None Remove="RootKit\v1.0.29\AdbWinUsbApi.dll" />
+    <None Remove="RootKit\aapt.exe" />
+    <None Remove="RootKit\adb.exe" />
+    <None Remove="RootKit\AdbWinApi.dll" />
+    <None Remove="RootKit\AdbWinUsbApi.dll" />
+    <None Remove="RootKit\aidl.exe" />
+    <None Remove="RootKit\busybox" />
+    <None Remove="RootKit\cmd.exe" />
+    <None Remove="RootKit\LINKS.txt" />
+    <None Remove="RootKit\psneuter" />
+    <None Remove="RootKit\psneuter.c" />
+    <None Remove="RootKit\su" />
+    <None Remove="SuperMidia.jpg" />
+    <None Remove="TeamViewerHost.apk" />
+    <None Remove="TerminalEmulator.apk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Applications\AddOnBluebird.apk" />
+    <EmbeddedResource Include="Applications\AddOnOdroidC2.apk" />
+    <EmbeddedResource Include="Applications\AddOnUnnion.apk" />
+    <EmbeddedResource Include="LauncherBackup\BackupNovaLauncherOdroidC2._novabackup" />
+    <EmbeddedResource Include="LauncherBackup\BackupNovaLauncherUnnion._novabackup" />
+    <EmbeddedResource Include="Applications\google._android._tts._apk" />
+    <EmbeddedResource Include="Applications\nova-launcher.apk" />
+    <EmbeddedResource Include="RootKit\v1.0.29\adb.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\v1.0.29\AdbWinApi.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\v1.0.29\AdbWinUsbApi.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\aapt.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\adb.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\AdbWinApi.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\AdbWinUsbApi.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\aidl.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\busybox">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\cmd.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\LINKS.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\psneuter">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\psneuter.c">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RootKit\su">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\SuperMidia.jpg" />
+    <EmbeddedResource Include="Applications\TeamViewerHost.apk" />
+    <EmbeddedResource Include="Applications\TerminalEmulator.apk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="4.7.51" />
+    <PackageReference Include="Simix.SuperMidia.Core" Version="2.2.37" />
+    <PackageReference Include="Simix.SuperMidia.Entities" Version="2.2.49" />
+    <PackageReference Include="Simix.SuperMidia.Services" Version="2.2.9" />
+  </ItemGroup>
+
+</Project>
