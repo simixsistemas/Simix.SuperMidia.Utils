@@ -33,6 +33,7 @@ namespace SetupDevice {
         }
 
         public void ConnectIfNeeded(string deviceIp, bool validateConnection = false) {
+            Console.WriteLine("Validando conexão...");
             var output = Execute("devices -l", getOutput: true);
             var attempts = 0;
             while ((output.IndexOf(deviceIp, StringComparison.OrdinalIgnoreCase) == -1) && attempts < MAX_ATTEMPTS) {
@@ -46,7 +47,9 @@ namespace SetupDevice {
 
             if (!validateConnection) return;
 
-            Console.WriteLine("Validando conexão...");
+            Console.WriteLine("Conceda acesso ao ADB no dispositivo...");
+            Console.WriteLine("Caso ja tenha feito, precione qualquer tecla para continuar.");
+            Console.ReadKey();
             ExecuteWithSuperUser(GetDefaultCommands(), deviceIp);
         }
 
@@ -179,9 +182,7 @@ namespace SetupDevice {
         }
 
         private string GetAndroidSdkPath() {
-            var outPutPath = string.Empty;
             var drives = DriveInfo.GetDrives();
-            var found = false;
             var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var userLocal = userFolder.Substring(Path.GetPathRoot(userFolder).Length);
             var suggestedFolders = new[] { "Android", userLocal, "Program Files (x86)", "Program Files (x86)" };
@@ -192,29 +193,19 @@ namespace SetupDevice {
                     foreach (var suggestedSubFolder in suggestedSubFolders) {
                         var currentPath = Path.Combine(drive.Name, suggestedFolder, suggestedSubFolder, "platform-tools");
                         if (!Directory.Exists(currentPath)) continue;
-                        var Files = Directory.GetFiles(currentPath, "*.exe", SearchOption.AllDirectories);
-
-                        foreach (var file in Files) {
+                        var files = Directory.GetFiles(currentPath, "*.exe", SearchOption.AllDirectories);
+                        foreach (var file in files) {
                             if (file.Contains("adb.exe")) {
-                                outPutPath = file;
-                                found = true;
+                                Console.WriteLine($"Using adb path '{_localAdbDirectory}'");
+                                return file;
                             }
-                            if (found) break;
                         }
-                        if (found) break;
                     }
-                    if (found) break;
                 }
-
-                if (found) break;
             }
 
-            if (string.IsNullOrEmpty(outPutPath)) {
-                outPutPath = _localAdbDirectory;
-            }
-
-            Console.WriteLine($"Using adb path '{outPutPath}'");
-            return outPutPath;
+            Console.WriteLine($"Using adb path '{_localAdbDirectory}'");
+            return _localAdbDirectory;
         }
 
         private IEnumerable<string> GetDefaultCommands() {

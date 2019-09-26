@@ -2,8 +2,6 @@
 using Simix.SuperMidia.Entities.Enums;
 using Simix.SuperMidia.Services;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -66,8 +64,10 @@ namespace SetupDevice {
 
         private static void ChangeLauncher(string deviceIp) {
             Console.WriteLine("Alterando launcher...");
-            adb.Execute("shell am start -n com.teslacoilsw.launcher/com.teslacoilsw.launcher.NovaLauncher", deviceIp);
-            adb.Execute("shell am start -n com.teslacoilsw.launcher/com.teslacoilsw.launcher.NovaLauncher", deviceIp);
+            var command = "shell am start -n com.teslacoilsw.launcher/com.teslacoilsw.launcher.NovaLauncher";
+            adb.Execute(command, deviceIp);
+            //Chama segunda vez para pular tutorial
+            adb.Execute(command, deviceIp);
         }
 
         private static void PushBackups(string workingDirectory, string deviceIp) {
@@ -240,7 +240,7 @@ namespace SetupDevice {
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource)) {
                 using (var fileStream = new FileStream(fileName, FileMode.Create)) {
-                    for (int i = 0; i < stream.Length; i++)
+                    for (var i = 0; i < stream.Length; i++)
                         fileStream.WriteByte((byte)stream.ReadByte());
                 }
             }
@@ -250,7 +250,7 @@ namespace SetupDevice {
             var sb = new StringBuilder();
             var escapeDot = false;
 
-            for (int i = resourceName.Length - 1; i >= 0; i--) {
+            for (var i = resourceName.Length - 1; i >= 0; i--) {
                 if (resourceName[i] == '_') {
                     escapeDot = true;
                     continue;
