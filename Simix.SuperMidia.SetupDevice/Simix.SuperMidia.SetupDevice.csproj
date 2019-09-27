@@ -98,4 +98,8 @@
     <PackageReference Include="Simix.SuperMidia.Services" Version="2.2.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Simix.SuperMidia.Utils.Core\Simix.SuperMidia.Utils.Core.csproj" />
+  </ItemGroup>
+
 </Project>
