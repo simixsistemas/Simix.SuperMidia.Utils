@@ -1,6 +1,7 @@
 ﻿using Simix.SuperMidia.Core.Extensions;
 using Simix.SuperMidia.Entities.Enums;
 using Simix.SuperMidia.Services;
+using Simix.SuperMidia.Utils.Core.Adb;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace SetupDevice {
     class Program {
-        private static Adb adb;
+        private static AdbTerminal adb;
 
         static void Main(string[] args) {
             Console.WriteLine("*****************************************************");
@@ -28,7 +29,6 @@ namespace SetupDevice {
             if (!File.Exists("Adb.Config"))
                 BuildSettingsFile();
 
-            
             try {
                 SaveDefaultFiles();
                 var workingDirectory = StartAdb();
@@ -163,7 +163,7 @@ namespace SetupDevice {
             var localAdbDirectory = Directory.GetFiles(workingDirectory, "*adb.exe", SearchOption.AllDirectories).FirstOrDefault();
 
             Console.WriteLine(localAdbDirectory);
-            adb = new Adb(settings, localAdbDirectory);
+            adb = new AdbTerminal(settings, localAdbDirectory);
             Task.Delay(900).GetAwaiter().GetResult();
             return workingDirectory;
         }
@@ -179,7 +179,7 @@ namespace SetupDevice {
         }
 
         private static void DownloadRelease(string application, AppcenterService service) {
-            var token =$"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes($"felipe.baltazar@simix.com.br:8YA?hh],)m%?UvvJ"))}";
+            var token = $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes($"felipe.baltazar@simix.com.br:8YA?hh],)m%?UvvJ"))}";
             var release = service.GetCurrentRelease(application, "", ReleaseGroup.Release).GetAwaiter().GetResult();
             using (var client = new HttpClient()) {
                 using (var result = client.GetStreamAsync(release.DownloadLink).GetAwaiter().GetResult()) {

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simix.SuperMidia.SetupDevic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simix.SuperMidia.DeviceConnect", "Simix.SuperMidia.DeviceConnect\Simix.SuperMidia.DeviceConnect.csproj", "{838A20A9-947F-4C9A-BE24-D7BE37F42C87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simix.SuperMidia.Utils.Core", "Simix.SuperMidia.Utils.Core\Simix.SuperMidia.Utils.Core.csproj", "{838A68BB-B97D-469F-946C-58C013AE0858}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{838A20A9-947F-4C9A-BE24-D7BE37F42C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{838A20A9-947F-4C9A-BE24-D7BE37F42C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{838A20A9-947F-4C9A-BE24-D7BE37F42C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838A68BB-B97D-469F-946C-58C013AE0858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838A68BB-B97D-469F-946C-58C013AE0858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838A68BB-B97D-469F-946C-58C013AE0858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838A68BB-B97D-469F-946C-58C013AE0858}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

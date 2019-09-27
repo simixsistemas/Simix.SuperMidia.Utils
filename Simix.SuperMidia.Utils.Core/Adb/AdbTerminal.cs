@@ -1,35 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-namespace SetupDevice {
-    public sealed class Adb {
+namespace Simix.SuperMidia.Utils.Core.Adb {
+    public sealed class AdbTerminal : IDisposable {
+        #region Fields
+
         private const int MAX_ATTEMPTS = 40;
         private const string PATH_DESTINY = "/sdcard/Download/";
+
         private readonly string _localAdbDirectory;
+        private readonly ProcessStartInfo _psi;
         private readonly Settings _settings;
         private readonly Process _process;
-        private readonly ProcessStartInfo _psi;
-        private readonly StreamWriter _sw;
+        private StreamWriter sw;
 
-        public Adb(Settings adbSettings, string adbDirectory = null) {
+        #endregion
+
+        #region Public Methods
+
+        public AdbTerminal(Settings adbSettings, string adbDirectory = null) {
             _localAdbDirectory = adbDirectory ?? "RootKit\\adb.exe";
             _settings = adbSettings;
             _process = new Process();
             _psi = new ProcessStartInfo();
-            _psi.FileName = "cmd.exe";
-            _psi.RedirectStandardInput = true;
-            _psi.UseShellExecute = false;
-            _psi.WorkingDirectory = Path.GetDirectoryName(GetAndroidSdkPath());
-            _process.StartInfo = _psi;
-            _process.Start();
-            _sw = _process.StandardInput;
+            StartSuperUserProcess();
         }
 
         public void ConnectIfNeeded(string deviceIp, bool validateConnection = false) {
@@ -45,7 +43,7 @@ namespace SetupDevice {
             if (output.IndexOf(deviceIp, StringComparison.OrdinalIgnoreCase) == -1)
                 throw new Exception("Não foi possível conectar ao dispositivo");
 
-            if (!validateConnection) return;
+            if (!validateConnection || !(_settings?.SuperUser?.HasCommands() ?? false)) return;
 
             Console.WriteLine("Conceda acesso ao ADB no dispositivo...");
             Console.WriteLine("Caso ja tenha feito, precione qualquer tecla para continuar.");
@@ -90,25 +88,19 @@ namespace SetupDevice {
         }
 
         public void SetLanguage(LanguageMode language, string deviceIp) {
-            var languageLocale = language.ToString().Split("_");
-            var commands = new List<string>() {
-                $"setprop persist.sys.language  {languageLocale[0]}",
-                $"setprop persist.sys.country {languageLocale[1]}",
-                "stop",
-                "sleep 2",
-                "start"
-            };
+            var languageLocale = language.ToString().Split('_');
+            var commands = BuildLanguageCommands(languageLocale[0], languageLocale[1]);
 
             ExecuteWithSuperUser(GetDefaultCommands(), deviceIp);
             ExecuteWithSuperUser(commands, deviceIp);
         }
 
         public void ExecuteWithSuperUser(IEnumerable<string> commandList, string deviceIp) {
-            _sw.WriteLine($"adb connect {deviceIp}:5555");
+            sw.WriteLine($"adb connect {deviceIp}:5555");
 
             foreach (var cmd in commandList) {
                 Task.Delay(900).GetAwaiter().GetResult();
-                _sw.WriteLine(cmd);
+                sw.WriteLine(cmd);
                 Console.WriteLine(cmd);
             }
         }
@@ -156,30 +148,9 @@ namespace SetupDevice {
             return output;
         }
 
-        public IEnumerable<string> FindDevices() {
-            var p = new Process();
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.Arguments = "devices -l";
+        #endregion
 
-            var sdkOutput = GetAndroidSdkPath();
-
-            p.StartInfo.FileName = sdkOutput;
-            p.Start();
-
-            var sOutput = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
-
-            var lines = TakeLastLines(sOutput, 15);
-            var result = new List<string>();
-
-            foreach (var line in lines) {
-                if (line.ToLower().IndexOf("device:") > -1)
-                    result.Add(line);
-            }
-
-            return result;
-        }
+        #region Private Methods
 
         private string GetAndroidSdkPath() {
             var drives = DriveInfo.GetDrives();
@@ -208,22 +179,56 @@ namespace SetupDevice {
             return _localAdbDirectory;
         }
 
+        private void StartSuperUserProcess() {
+            _psi.FileName = "cmd.exe";
+            _psi.RedirectStandardInput = true;
+            _psi.UseShellExecute = false;
+            _psi.WorkingDirectory = Path.GetDirectoryName(GetAndroidSdkPath());
+            _process.StartInfo = _psi;
+
+            if (_settings?.SuperUser?.HasCommands() ?? false) {
+                _process.Start();
+                sw = _process.StandardInput;
+            }
+        }
+
+        public IEnumerable<string> FindDevices() {
+            var p = new Process();
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.Arguments = "devices -l";
+
+            var sdkOutput = GetAndroidSdkPath();
+
+            p.StartInfo.FileName = sdkOutput;
+            p.Start();
+
+            var sOutput = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+
+            var lines = TakeLastLines(sOutput, 15);
+            var result = new List<string>();
+
+            foreach (var line in lines) {
+                if (line.ToLower().IndexOf("device:") > -1)
+                    result.Add(line);
+            }
+
+            return result;
+        }
+
+        private IEnumerable<string> BuildLanguageCommands(string language, string country) {
+            yield return $"setprop persist.sys.language  {language}";
+            yield return $"setprop persist.sys.country {country}";
+            yield return "stop";
+            yield return "sleep 2";
+            yield return "start";
+        }
+
         private IEnumerable<string> GetDefaultCommands() {
             yield return "adb root";
             yield return "adb shell";
             yield return "su";
-        }
-
-        private List<string> TakeLastLines(string text, int count) {
-            var lines = new List<string>();
-            var match = Regex.Match(text, "^.*$", RegexOptions.Multiline | RegexOptions.RightToLeft);
-
-            while (match.Success && lines.Count < count) {
-                lines.Insert(0, match.Value);
-                match = match.NextMatch();
-            }
-
-            return lines;
         }
 
         private IEnumerable<string> GetSuperUserCommands() {
@@ -247,45 +252,28 @@ namespace SetupDevice {
             yield return "exit";
             yield return "exit";
         }
-    }
 
-    public enum LanguageMode {
-        Pt_BR = 0,
-        Es_ES = 1,
-        En_US = 2
-    }
+        private List<string> TakeLastLines(string text, int count) {
+            var lines = new List<string>();
+            var match = Regex.Match(text, "^.*$", RegexOptions.Multiline | RegexOptions.RightToLeft);
 
-    [Serializable()]
-    [DesignerCategory("code")]
-    [XmlRoot("SETTINGS")]
-    public partial class Settings {
-        [XmlElement("SUPERUSER")]
-        public SuperUser SuperUser { get; set; }
+            while (match.Success && lines.Count < count) {
+                lines.Insert(0, match.Value);
+                match = match.NextMatch();
+            }
 
-        [XmlElement("EXECUTE")]
-        public Execute Execute { get; set; }
-    }
+            return lines;
+        }
 
-    [Serializable()]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public partial class SuperUser : AdbCommand {
-    }
+        #endregion
 
-    [Serializable()]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true)]
-    public partial class Execute : AdbCommand {
-    }
+        #region IDisposable
 
-    public abstract class AdbCommand {
-        [XmlElement("UNINSTALL", IsNullable = true)]
-        public string[] Uninstall { get; set; }
+        public void Dispose() {
+            sw.Dispose();
+            _process.Dispose();
+        }
 
-        [XmlElement("DISABLE", IsNullable = true)]
-        public string[] Disable { get; set; }
-
-        [XmlElement("CUSTOM", IsNullable = true)]
-        public string[] Custom { get; set; }
+        #endregion
     }
 }

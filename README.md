@@ -2,7 +2,6 @@
 # Simix.SuperMidia.Utils
  Utilitarios gerais para SuperMidia
 
-
  ## Primeira vez aqui?
 
  - Para baixar o projeto você precisará de um gerenciador de versão, como sugetão você pode utilizar o Github Desktop:
@@ -14,7 +13,7 @@
 
  > Para próximas modificações, selecione novamente o branch "Master", clique em "Fetch Origin" para atualizar quaisquer alterações feitas na nuvem e apos isso crie um novo branch.
 
- - Faça as modificações necessárias (adicione/remova arquivos, altere código através de alguma IDE, etc);
+ - Faça as modificações necessárias (adicione/remova arquivos, altere código através de alguma [IDE](https://code.visualstudio.com/), etc);
  - Volte para o github desktop e verá as modificações na tela à esquerda ("Changes");
  - Faça uma descrição para as modificações, em "Summmary" e clique em `Commit to {seu novo branch}`
  - Clique em Publish Branch e após isso será habilitado um botão "Create pull request", selecione-o
@@ -25,7 +24,7 @@
 
  Configura um dispositivo, conectado via USB ou Rede, para distribuição em cliente.
  Utiliza um arquivo .Config para executar scripts adb e envia arquivos, para o dispositivo, conforme pastas padrões.
-Exemplo de arquivo de configuração (criado automaticamente caso nao exista):
+Exemplo de arquivo de configuração (criado automaticamente caso não exista):
 
 ```Xml
 <?xml version="1.0" encoding="utf-8"?>
