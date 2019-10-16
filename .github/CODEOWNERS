@@ -1,0 +1,14 @@
+# Global Owner
+@simix-markus
+
+# Device Connect
+/Simix.SuperMidia.DeviceConnect/ @simix-felipebaltazar
+/Simix.SuperMidia.DeviceConnect/ @simix-markus
+
+# Device Connect
+/Simix.SuperMidia.SetupDevice/ @simix-felipebaltazar
+/Simix.SuperMidia.SetupDevice/ @simix-markus
+
+# Device Connect
+/Simix.SuperMidia.Utils.Core/ @simix-felipebaltazar
+/Simix.SuperMidia.Utils.Core/ @simix-markus

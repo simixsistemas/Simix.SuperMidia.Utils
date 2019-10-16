@@ -2,6 +2,8 @@
 # Simix.SuperMidia.Utils
  Utilitarios gerais para SuperMidia
 
+ [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=simixsistemas/Simix.SuperMidia.Utils)](https://dependabot.com)
+
  ## Primeira vez aqui?
 
  - Para baixar o projeto você precisará de um gerenciador de versão, como sugetão você pode utilizar o Github Desktop:
