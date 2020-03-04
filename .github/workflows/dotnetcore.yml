@@ -14,4 +14,7 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
+      env:
+        USER_VARIABLE: ${{ secrets.USER_VARIABLE }}
+        PAT: ${{ secrets.PAT }}
       run: dotnet build --configuration Release
