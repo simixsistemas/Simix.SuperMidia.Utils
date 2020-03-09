@@ -93,7 +93,7 @@
 
   <ItemGroup>
     <PackageReference Include="Refit" Version="5.0.23" />
-    <PackageReference Include="Simix.SuperMidia.Core" Version="2.2.128" />
+    <PackageReference Include="Simix.SuperMidia.Core" Version="2.2.129" />
     <PackageReference Include="Simix.SuperMidia.Entities" Version="2.2.182" />
     <PackageReference Include="Simix.SuperMidia.Services" Version="2.2.149" />
   </ItemGroup>
