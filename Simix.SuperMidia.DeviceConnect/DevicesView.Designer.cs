@@ -147,7 +147,7 @@
             this.notifyIcon1.BalloonTipText = "Click to show";
             this.notifyIcon1.BalloonTipTitle = "Remote Devices";
             this.notifyIcon1.ContextMenuStrip = this.closeAction;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            
             this.notifyIcon1.Text = "RemoteDevices";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon_MouseDoubleClick);
