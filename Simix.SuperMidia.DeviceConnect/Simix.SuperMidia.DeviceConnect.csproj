@@ -32,7 +32,7 @@
     
     <None Include="App.config" />
     
-    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+    <PackageReference Include="System.Resources.Extensions" Version="5.0.0" />
     
     <ProjectReference Include="..\Simix.SuperMidia.Utils.Core\Simix.SuperMidia.Utils.Core.csproj">
       <Project>{838A68BB-B97D-469F-946C-58C013AE0858}</Project>
