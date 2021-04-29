@@ -1,0 +1,25 @@
+version: 2
+registries:
+  git-github-com:
+    type: git
+    url: https://github.com
+    username: felipe.baltazar@simix.com.br
+    password: "${{secrets.GIT_GITHUB_COM_PASSWORD}}"
+  nuget-feed-simixsistemas-pkgs-visualstudio-com-packaging-simixpa:
+    type: nuget-feed
+    url: https://simixsistemas.pkgs.visualstudio.com/_packaging/SimixPackages/nuget/v3/index.json
+    username: "${{secrets.NUGET_FEED_SIMIXSISTEMAS_PKGS_VISUALSTUDIO_COM_PACKAGING_SIMIXPA_USERNAME}}"
+    password: "${{secrets.NUGET_FEED_SIMIXSISTEMAS_PKGS_VISUALSTUDIO_COM_PACKAGING_SIMIXPA_PASSWORD}}"
+
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - simix-markus
+  - simix-felipebaltazar
+  registries:
+  - nuget-feed-simixsistemas-pkgs-visualstudio-com-packaging-simixpa
+  - git-github-com
